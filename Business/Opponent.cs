@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Text;
+using Business.Tools;
 
 namespace Business
 {
@@ -14,7 +15,7 @@ namespace Business
             {
                 try
                 {
-                    var request = (HttpWebRequest)WebRequest.Create(ReadSetting("Url") + "attack");
+                    var request = (HttpWebRequest)WebRequest.Create(ConfigSettings.ReadSetting("Url") + "attack");
                     request.GetResponse();
 
                     Console.WriteLine("Found!!!");
@@ -30,7 +31,7 @@ namespace Business
 
         public static int Post(string action, string postData)
         {
-            var request = (HttpWebRequest)WebRequest.Create(ReadSetting("Url") + action);
+            var request = (HttpWebRequest)WebRequest.Create(ConfigSettings.ReadSetting("Url") + action);
             request.Timeout = 100000;
 
             var data = Encoding.ASCII.GetBytes(postData);
@@ -51,19 +52,5 @@ namespace Business
             return Int32.Parse(responseString);
         }
 
-        public static string ReadSetting(string key)
-        {
-            try
-            {
-                var appSettings = ConfigurationManager.AppSettings;
-                var result = appSettings[key] ?? "Not Found";
-                return result;
-            }
-            catch (ConfigurationErrorsException)
-            {
-                Console.WriteLine("Error reading app settings");
-            }
-            return null;
-        }
     }
 }
