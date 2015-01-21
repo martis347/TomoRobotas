@@ -10,7 +10,6 @@ namespace RobotsAtWar.tests
     public class WarriorTester
     {
         private Warrior _warrior1;
-        private Warrior _opponent;
 
         [TestFixtureSetUp]
         public void FixtureSetUp()
@@ -22,10 +21,6 @@ namespace RobotsAtWar.tests
         public void SetUp()
         {
             _warrior1 = new Warrior("You");
-            _opponent = new Warrior("Opponent");
-
-            _warrior1.Enemy = _opponent;
-            _opponent.Enemy = _warrior1;
         }
 
         [Test]

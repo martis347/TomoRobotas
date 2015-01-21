@@ -21,7 +21,6 @@ namespace Business
         private int Life { get; set; }
         private string Name { get; set; }
 
-        public Warrior Enemy { get; set; }
         public int GetLife() { return Life; }
         public string GetName() { return Name; }
 
@@ -39,39 +38,6 @@ namespace Business
         }
 
 
-
-        public int GetAttacked(int damage)
-        {
-            if (damage < 0 || damage > 5)
-            {
-                Logger.Info("Invalid damage!");
-                return 0;
-            }
-
-            if (State == States.Defending || damage == 0)
-            {
-                Logger.Info(
-                        (Name.Equals("warrior1") ? "You" : "Opponent")
-                        + " didn`t lose any health because " +
-                              (Name.Equals("warrior1") ? "you were" : "he was") + " defending!");
-                return 0;
-            }
-            else
-            {
-                if (State == States.Attacking || State == States.Resting)
-                    State = States.Interrupted;
-
-                Logger.Info(
-                        (Name.Equals("warrior1") ? "You" : "Opponent")
-                        + " had lost " + damage + " health points.");
-                Life -= damage;
-
-                return damage;
-            }
-        }
-
-
-
         public int Attack(int time)
         {
             if (time < 1 || time > 3)
@@ -84,8 +50,8 @@ namespace Business
             State = States.Attacking;
             var damage = (time * 2) - 1; // TODO: think about ballance.
             Logger.Info("You are trying to deal " + damage + " damage!");
-            
-            Thread.Sleep(time*1000);
+
+            Thread.Sleep(time * 1000);
 
             if (State == States.Interrupted)
             {
@@ -99,6 +65,47 @@ namespace Business
 
             return damage;
         }
+
+        public void Check()
+        {
+            Logger.Info("You are checking the State of your enemy");
+
+            Logger.InfoFormat("The State of your enemy is: ", _opponent.GetState());
+        }
+
+
+        public int GetAttacked(int damage)
+        {
+            if (damage < 0 || damage > 5)
+            {
+                Logger.Info("Invalid damage!");
+                return 0;
+            }
+
+            if (State == States.Defending || damage == 0)
+            {
+                // TODO: figure it out.
+//                Logger.Info(
+//                        (Name.Equals("warrior1") ? "You" : "Opponent")
+//                        + " didn`t lose any health because " +
+//                              (Name.Equals("warrior1") ? "you were" : "he was") + " defending!");
+                return 0;
+            }
+
+            if (State == States.Attacking || State == States.Resting)
+                State = States.Interrupted;
+
+//            Logger.Info(
+//                    (Name.Equals("warrior1") ? "You" : "Opponent")
+//                    + " had lost " + damage + " health points.");
+
+            Logger.InfoFormat("I was dammaged for {0} hitpoints", damage);
+
+            Life -= damage;
+
+            return damage;
+        }
+
 
         public void Defend(int time)
         {
@@ -143,13 +150,6 @@ namespace Business
             Life += healPoints;
 
             return healPoints;
-        }
-
-        public void Check()
-        {
-            Logger.Info("You are checking the State of your enemy");
-
-            Logger.InfoFormat("The State of your enemy is: ", _opponent.GetState());
         }
 
         public void DoNothing()
