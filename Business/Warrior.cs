@@ -158,7 +158,7 @@ namespace Business
             Logger.Info("Idling");
         }
 
-        public void SetCommand(Commands command)
+        public void ExecuteCommand(Commands command)
         {
             switch (command.Action)
             {
@@ -182,15 +182,15 @@ namespace Business
 
         public void FightLoop(List<Commands> strategy)
         {
-            int it = 0;
+            int actionIndex = 0;
             while (true)
             {
-                SetCommand(strategy[it % strategy.Count]);
+                ExecuteCommand(strategy[actionIndex % strategy.Count]);
                 if (Enemy.Life < 1 || Life < 1)
                 {
                     break;
                 }
-                it++;
+                actionIndex++;
             } 
         }
     }
