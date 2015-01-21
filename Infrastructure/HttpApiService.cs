@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
 using Business;
-using Communication;
 
 namespace Infrastructure
 {

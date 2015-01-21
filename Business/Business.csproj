@@ -90,6 +90,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Opponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy.cs" />
     <Compile Include="Battle.cs" />
@@ -108,12 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="static\css\bootstrap.min.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Communication\Communication.csproj">
-      <Project>{34D2EF75-9B43-4FA6-A2E3-D664D1E1B56E}</Project>
-      <Name>Communication</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
