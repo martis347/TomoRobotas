@@ -35,7 +35,7 @@ namespace Infrastructure
             _server.OpenAsync();
             
             Opponent.WaitForOpponent();
-            new BattleField().Start();
+            new BattleField().StartBattle();
         }
 
         public void Stop()

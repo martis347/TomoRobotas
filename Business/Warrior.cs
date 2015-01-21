@@ -11,6 +11,10 @@ namespace Business
 
     public class Warrior
     {
+        private readonly Opponent _opponent;
+        private readonly List<Commands> _strategy;
+        private int _currentActionNumber = 0;
+
         private static readonly ILog Logger = LogManager.GetLogger(typeof(Warrior));
 
         private States State { get; set; }
@@ -24,6 +28,13 @@ namespace Business
         public Warrior(string name)
         {
             Life = 10;
+            Name = name;
+        }
+
+        public Warrior(string name, Opponent opponent, List<Commands> strategy)
+        {
+            _opponent = opponent;
+            _strategy = strategy;
             Name = name;
         }
 
@@ -158,7 +169,7 @@ namespace Business
             Logger.Info("Idling");
         }
 
-        public void ExecuteCommand(Commands command)
+        private void ExecuteCommand(Commands command)
         {
             switch (command.Action)
             {
@@ -183,6 +194,11 @@ namespace Business
         public bool IsAlive()
         {
             return Life > 0;
+        }
+
+        public void ExecuteNextCommand()
+        {
+            ExecuteCommand(_strategy[_currentActionNumber % _strategy.Count]);
         }
     }
 

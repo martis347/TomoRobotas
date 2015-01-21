@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using log4net;
+﻿using log4net;
 
 namespace Business
 {
@@ -9,35 +6,39 @@ namespace Business
     {
         private static ILog _logger;
         public static Warrior Warrior1;
-        public static Warrior Opponent;
+        public static Opponent Opponent;
 
-        public void Start()
+        public void StartBattle()
         {
             _logger = LogManager.GetLogger(typeof(BattleField));
 
-            Warrior1 = new Warrior("warrior1");
-            Opponent = new Warrior("opponent");
-
-            Warrior1.Enemy = Opponent;
-            Opponent.Enemy = Warrior1;
-
-            Thread.Sleep(1000);
-            Console.WriteLine("Battle starts in 3");
-            Thread.Sleep(1000);
-            Console.WriteLine("Battle starts in 2");
-            Thread.Sleep(1000);
-            Console.WriteLine("Battle starts in 1");
-            Thread.Sleep(1000);
-
-            FightLoop(Strategy.YourStrategy());
+            StartBattleCore();
 
             _logger.Info("warior1 life = " + Warrior1.GetLife() + " " + Warrior1.GetName());
             _logger.Info("opponent life = " + Opponent.GetLife() + " " + Opponent.GetName());
         }
 
-        private void FightLoop(List<Commands> strategy)
+        private void StartBattleCore()
         {
-            int actionIndex = 0;
+            Opponent = new Opponent();
+
+            Warrior1 = new Warrior("warrior1", Opponent, Strategy.YourStrategy());
+
+            FightLoop();
+
+
+//            Thread.Sleep(1000);
+//            Console.WriteLine("Battle starts in 3");
+//            Thread.Sleep(1000);
+//            Console.WriteLine("Battle starts in 2");
+//            Thread.Sleep(1000);
+//            Console.WriteLine("Battle starts in 1");
+//            Thread.Sleep(1000);
+
+        }
+
+        private void FightLoop()
+        {
             while (true)
             {
                 if (!Warrior1.IsAlive() || !Opponent.IsAlive())
@@ -45,9 +46,8 @@ namespace Business
                     break;
                 }
 
-                Warrior1.ExecuteCommand(strategy[actionIndex % strategy.Count]);
+                Warrior1.ExecuteNextCommand();
 
-                actionIndex++;
             }
         }
 

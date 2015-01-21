@@ -54,5 +54,19 @@ namespace Business
             return Int32.Parse(responseString);
         }
 
+        public int GetLife()
+        {
+            return 999;
+        }
+
+        public string GetName()
+        {
+            return "set my name!";
+        }
+
+        public bool IsAlive()
+        {
+            return true;
+        }
     }
 }
