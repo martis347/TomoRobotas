@@ -180,18 +180,9 @@ namespace Business
             }
         }
 
-        public void FightLoop(List<Commands> strategy)
+        public bool IsAlive()
         {
-            int actionIndex = 0;
-            while (true)
-            {
-                ExecuteCommand(strategy[actionIndex % strategy.Count]);
-                if (Enemy.Life < 1 || Life < 1)
-                {
-                    break;
-                }
-                actionIndex++;
-            } 
+            return Life > 0;
         }
     }
 

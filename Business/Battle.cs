@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using log4net;
 
@@ -28,15 +29,27 @@ namespace Business
             Console.WriteLine("Battle starts in 1");
             Thread.Sleep(1000);
 
-            Warrior1.FightLoop(Strategy.YourStrategy());
+            FightLoop(Strategy.YourStrategy());
 
             _logger.Info("warior1 life = " + Warrior1.GetLife() + " " + Warrior1.GetName());
             _logger.Info("opponent life = " + Opponent.GetLife() + " " + Opponent.GetName());
         }
 
-        public void Stop()
+        private void FightLoop(List<Commands> strategy)
         {
-            _logger.Info("Service stopped");
+            int actionIndex = 0;
+            while (true)
+            {
+                if (!Warrior1.IsAlive() || !Opponent.IsAlive())
+                {
+                    break;
+                }
+
+                Warrior1.ExecuteCommand(strategy[actionIndex % strategy.Count]);
+
+                actionIndex++;
+            }
         }
+
     }
 }
