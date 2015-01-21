@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -9,13 +8,15 @@ namespace Business
 {
     public class Opponent
     {
+        private const string OPPONENT_URL = "OpponentUrl";
+
         public static void WaitForOpponent()
         {
             while (true)
             {
                 try
                 {
-                    var request = (HttpWebRequest)WebRequest.Create(ConfigSettings.ReadSetting("Url") + "attack");
+                    var request = (HttpWebRequest)WebRequest.Create(ConfigSettings.ReadSetting(OPPONENT_URL) + "attack");
                     request.GetResponse();
 
                     Console.WriteLine("Found!!!");
@@ -31,7 +32,7 @@ namespace Business
 
         public static int Post(string action, string postData)
         {
-            var request = (HttpWebRequest)WebRequest.Create(ConfigSettings.ReadSetting("Url") + action);
+            var request = (HttpWebRequest)WebRequest.Create(ConfigSettings.ReadSetting(OPPONENT_URL) + action);
             request.Timeout = 100000;
 
             var data = Encoding.ASCII.GetBytes(postData);
