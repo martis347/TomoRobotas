@@ -16,6 +16,7 @@ namespace Business
             {
                 try
                 {
+                    // TODO: move htto logilc to a wrapper class
                     var request = (HttpWebRequest)WebRequest.Create(ConfigSettings.ReadSetting(OPPONENT_URL) + "attack");
                     request.GetResponse();
 
