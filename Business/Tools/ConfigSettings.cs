@@ -3,7 +3,7 @@ using System.Configuration;
 
 namespace Business.Tools
 {
-    class ConfigSettings
+    public class ConfigSettings
     {
         public static string ReadSetting(string key)
         {
