@@ -68,5 +68,15 @@ namespace Business
         {
             return true;
         }
+
+        public string GetState()
+        {
+            return "OMFG";
+        }
+
+        public void FeelMyWrath(int damage)
+        {
+            Post("attack", "=" + damage);
+        }
     }
 }

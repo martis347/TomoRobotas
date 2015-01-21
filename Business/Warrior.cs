@@ -38,33 +38,7 @@ namespace Business
             Name = name;
         }
 
-        public int Attack(int time)
-        {
-            if (time < 1 || time > 3)
-            {
-                Logger.Info("Invalid time!");
-                State = States.DoingNothing;
-                return 0;
-            }
 
-            State = States.Attacking;
-            var damage = (time * 2) - 1;
-            Logger.Info("You are trying to deal " + damage + " damage!");
-            
-            Thread.Sleep(time*1000);
-
-            if (State == States.Interrupted)
-            {
-                Logger.Info("You were trying to attack, but you were interrupted");
-                return 0;
-            }
-
-            Enemy.GetAttacked(Opponent.Post("attack", "=" + time));
-
-            State = States.DoingNothing;
-
-            return damage;
-        }
 
         public int GetAttacked(int damage)
         {
@@ -77,10 +51,10 @@ namespace Business
             if (State == States.Defending || damage == 0)
             {
                 Logger.Info(
-                        (Name.Equals("warrior1")? "You" : "Opponent") 
+                        (Name.Equals("warrior1") ? "You" : "Opponent")
                         + " didn`t lose any health because " +
                               (Name.Equals("warrior1") ? "you were" : "he was") + " defending!");
-                return 0;                
+                return 0;
             }
             else
             {
@@ -94,6 +68,36 @@ namespace Business
 
                 return damage;
             }
+        }
+
+
+
+        public int Attack(int time)
+        {
+            if (time < 1 || time > 3)
+            {
+                Logger.Info("Invalid time!");
+                State = States.DoingNothing;
+                return 0;
+            }
+
+            State = States.Attacking;
+            var damage = (time * 2) - 1; // TODO: think about ballance.
+            Logger.Info("You are trying to deal " + damage + " damage!");
+            
+            Thread.Sleep(time*1000);
+
+            if (State == States.Interrupted)
+            {
+                Logger.Info("You were trying to attack, but you were interrupted");
+                return 0;
+            }
+
+            _opponent.FeelMyWrath(damage);
+
+            State = States.DoingNothing;
+
+            return damage;
         }
 
         public void Defend(int time)
@@ -125,6 +129,7 @@ namespace Business
 
             Thread.Sleep(time*1000);
 
+            // TODO: think about rules ... this might be a bad ballance.
             if (State == States.Interrupted)
             {
                 Logger.Info("You were trying to rest, but you were interrupted");
@@ -135,32 +140,16 @@ namespace Business
 
             var healPoints = (int) Math.Pow(2.0, time);
 
-            //Life += healPoints;
-
-            //Opponent.Post("rest", "="+healPoints);
+            Life += healPoints;
 
             return healPoints;
         }
 
-        public int EnemyGetRested(int healPoints)
-        {
-            if (healPoints < 1)
-            {
-                Logger.Info("Invalid number!");
-                return 0;
-            }
-
-            Logger.Info("Opponent has been healed by " + healPoints + " points!");
-            Enemy.Life += healPoints;
-
-            return healPoints;
-        }
-
-        public String Check()
+        public void Check()
         {
             Logger.Info("You are checking the State of your enemy");
 
-            return Enemy.State.ToString();
+            Logger.InfoFormat("The State of your enemy is: ", _opponent.GetState());
         }
 
         public void DoNothing()
@@ -169,27 +158,6 @@ namespace Business
             Logger.Info("Idling");
         }
 
-        private void ExecuteCommand(Commands command)
-        {
-            switch (command.Action)
-            {
-                case Actions.Attack :
-                    Attack(command.Time);
-                    break;
-                case Actions.Defend :
-                    Defend(command.Time);
-                    break;
-                case Actions.Rest :
-                    Rest(command.Time);
-                    break;
-                case Actions.Check:
-                    Check();
-                    break;
-                default :
-                    DoNothing();
-                    break;
-            }
-        }
 
         public bool IsAlive()
         {
@@ -200,6 +168,29 @@ namespace Business
         {
             ExecuteCommand(_strategy[_currentActionNumber % _strategy.Count]);
         }
+
+        private void ExecuteCommand(Commands command)
+        {
+            switch (command.Action)
+            {
+                case Actions.Attack:
+                    Attack(command.Time);
+                    break;
+                case Actions.Defend:
+                    Defend(command.Time);
+                    break;
+                case Actions.Rest:
+                    Rest(command.Time);
+                    break;
+                case Actions.Check:
+                    Check();
+                    break;
+                default:
+                    DoNothing();
+                    break;
+            }
+        }
+
     }
 
     public class Commands

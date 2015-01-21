@@ -75,37 +75,38 @@ namespace RobotsAtWar.tests
             Assert.AreEqual(_warrior1.Rest(health), expected);
         }
 
-        [Test]
-        [TestCase()]
-        public void CheckCheckAction()
-        {
-            Thread thread = new Thread(() => _warrior1.Defend(3));
-            thread.Start();
-            Thread.Sleep(500);
-            Assert.AreEqual(_opponent.Check(), States.Defending.ToString());
+        //TODO: test a propper object.
+//        [Test]
+//        [TestCase()]
+//        public void CheckCheckAction()
+//        {
+//            Thread thread = new Thread(() => _warrior1.Defend(3));
+//            thread.Start();
+//            Thread.Sleep(500);
+//            Assert.AreEqual(_opponent.Check(), States.Defending.ToString());
+//
+//            thread = new Thread(() => _warrior1.Attack(3));
+//            thread.Start();
+//            Thread.Sleep(500);
+//            Assert.AreEqual(_opponent.Check(), States.Attacking.ToString());
+//
+//            thread = new Thread(() => _warrior1.Rest(3));
+//            thread.Start();
+//            Thread.Sleep(500);
+//            Assert.AreEqual(_opponent.Check(), States.Resting.ToString());
+//        }
 
-            thread = new Thread(() => _warrior1.Attack(3));
-            thread.Start();
-            Thread.Sleep(500);
-            Assert.AreEqual(_opponent.Check(), States.Attacking.ToString());
-
-            thread = new Thread(() => _warrior1.Rest(3));
-            thread.Start();
-            Thread.Sleep(500);
-            Assert.AreEqual(_opponent.Check(), States.Resting.ToString());
-        }
-
-        [Test]
-        public void CheckInterupting()
-        {
-            Thread warriorThread = new Thread(() => _warrior1.Attack(3));
-            Thread opponentThread = new Thread(() => _opponent.Attack(1));
-            warriorThread.Start();
-            Thread.Sleep(500);
-            Assert.AreEqual(_opponent.Check(), States.Attacking.ToString());
-            opponentThread.Start();
-            Thread.Sleep(1500);
-            Assert.AreEqual(_opponent.Check(), States.Interrupted.ToString());
-        }
+//        [Test]
+//        public void CheckInterupting()
+//        {
+//            Thread warriorThread = new Thread(() => _warrior1.Attack(3));
+//            Thread opponentThread = new Thread(() => _opponent.Attack(1));
+//            warriorThread.Start();
+//            Thread.Sleep(500);
+//            Assert.AreEqual(_opponent.Check(), States.Attacking.ToString());
+//            opponentThread.Start();
+//            Thread.Sleep(1500);
+//            Assert.AreEqual(_opponent.Check(), States.Interrupted.ToString());
+//        }
     }
 }
