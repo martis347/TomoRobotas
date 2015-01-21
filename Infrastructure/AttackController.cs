@@ -24,7 +24,7 @@ namespace Infrastructure
         // POST api/<controller>
         public int Post([FromBody] string strength)
         {
-            return Battle.Warrior1.GetAttacked(Int32.Parse(strength));
+            return BattleField.Warrior1.GetAttacked(Int32.Parse(strength));
         }
 
         // PUT api/<controller>/5

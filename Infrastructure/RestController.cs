@@ -22,7 +22,7 @@ namespace Infrastructure
         // POST api/<controller>
         public int Post([FromBody]string healPoints)
         {
-            return Battle.Opponent.EnemyGetRested(Int32.Parse(healPoints));
+            return BattleField.Opponent.EnemyGetRested(Int32.Parse(healPoints));
         }
 
         // PUT api/<controller>/5

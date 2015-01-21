@@ -5,7 +5,7 @@ using log4net;
 
 namespace Business
 {
-    public class Battle
+    public class BattleField
     {
         private static ILog _logger;
         public static Warrior Warrior1;
@@ -13,7 +13,7 @@ namespace Business
 
         public void Start()
         {
-            _logger = LogManager.GetLogger(typeof(Battle));
+            _logger = LogManager.GetLogger(typeof(BattleField));
 
             Warrior1 = new Warrior("warrior1");
             Opponent = new Warrior("opponent");
